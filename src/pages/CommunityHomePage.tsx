@@ -10,10 +10,8 @@ import {
 import { CommunityProgress } from '../components/CommunityProgress';
 
 const FIRST_MILESTONE = 250;
-const BASIC_MILESTONE = 1_000;
-const PREMIUM_MILESTONE = 3_000;
 
-export type ProgressBand = 'first' | 'basic' | 'premium' | 'complete';
+export type ProgressBand = 'first' | 'complete';
 
 export type ProgressState = {
   points: number;
@@ -48,37 +46,14 @@ function pointsLabel(points: number) {
 }
 
 function getProgressState(points: number): ProgressState {
-  if (points >= PREMIUM_MILESTONE) {
-    return {
-      points,
-      percent: 100,
-      label: '3,000+ pts · Full Community Pass unlocked',
-      band: 'complete',
-      isComplete: true,
-      sheetCopy:
-        "You've reached every Foundation milestone. Thanks for being one of our most active members.",
-    };
-  }
-
-  if (points >= BASIC_MILESTONE) {
-    return {
-      points,
-      percent: ((points - BASIC_MILESTONE) / (PREMIUM_MILESTONE - BASIC_MILESTONE)) * 100,
-      label: `${pointsLabel(points)} / 3,000 pts`,
-      band: 'premium',
-      isComplete: false,
-      sheetCopy: `You're at ${pointsLabel(points)} points — ${pointsLabel(PREMIUM_MILESTONE - points)} points from Premium in-home use test eligibility.`,
-    };
-  }
-
   if (points >= FIRST_MILESTONE) {
     return {
       points,
-      percent: ((points - FIRST_MILESTONE) / (BASIC_MILESTONE - FIRST_MILESTONE)) * 100,
-      label: `${pointsLabel(points)} / 1,000 pts`,
-      band: 'basic',
-      isComplete: false,
-      sheetCopy: `You've unlocked additional Community Home modules! You're at ${pointsLabel(points)} points — ${pointsLabel(BASIC_MILESTONE - points)} points from Basic in-home use test eligibility.`,
+      percent: 100,
+      label: 'Unlocked',
+      band: 'complete',
+      isComplete: true,
+      sheetCopy: "You've unlocked additional Community Home modules. More milestones are coming soon.",
     };
   }
 
@@ -99,8 +74,6 @@ const scenarios = [
   { label: 'New member', href: '?arm=2&points=0' },
   { label: 'Near first milestone', href: '?arm=2&points=230' },
   { label: 'Just crossed 250', href: '?arm=2&points=260' },
-  { label: 'Near 1,000', href: '?arm=2&points=950' },
-  { label: 'Above 3,000', href: '?arm=2&points=3200' },
   { label: 'Control arm', href: '?arm=1&points=230' },
 ];
 
