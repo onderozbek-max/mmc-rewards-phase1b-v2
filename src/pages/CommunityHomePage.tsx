@@ -33,8 +33,9 @@ const numberFormatter = new Intl.NumberFormat('en-US');
 
 function parseHomeConfig(): HomeConfig {
   const params = new URLSearchParams(window.location.search);
-  const rawPoints = Number(params.get('points'));
-  const points = Number.isFinite(rawPoints) ? Math.max(0, Math.round(rawPoints)) : 140;
+  const rawPoints = params.get('points');
+  const parsedPoints = rawPoints === null ? 140 : Number(rawPoints);
+  const points = Number.isFinite(parsedPoints) ? Math.max(0, Math.round(parsedPoints)) : 140;
 
   return {
     arm: params.get('arm') === '1' ? 1 : 2,
