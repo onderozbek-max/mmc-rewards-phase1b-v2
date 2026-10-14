@@ -10,8 +10,10 @@ import {
 import { CommunityProgress } from '../components/CommunityProgress';
 
 const FIRST_MILESTONE = 250;
+const BASIC_MILESTONE = 1_000;
+const PREMIUM_MILESTONE = 3_000;
 
-export type ProgressBand = 'first' | 'complete';
+export type ProgressBand = 'first' | 'basic' | 'premium' | 'complete';
 
 export type ProgressState = {
   points: number;
@@ -19,6 +21,7 @@ export type ProgressState = {
   label: string;
   band: ProgressBand;
   isComplete: boolean;
+  badge?: string;
   sheetCopy: string;
 };
 
@@ -46,14 +49,40 @@ function pointsLabel(points: number) {
 }
 
 function getProgressState(points: number): ProgressState {
-  if (points >= FIRST_MILESTONE) {
+  if (points >= PREMIUM_MILESTONE) {
     return {
       points,
       percent: 100,
-      label: 'Unlocked',
+      label: '3,000+ pts · All Foundation milestones reached',
       band: 'complete',
       isComplete: true,
-      sheetCopy: "You've unlocked additional Community Home modules. More milestones are coming soon.",
+      sheetCopy:
+        "You've reached 3,000 points — our highest Foundation milestone! Premium in-home use test eligibility is being prepared — we'll let you know the moment it's ready.",
+    };
+  }
+
+  if (points >= BASIC_MILESTONE) {
+    return {
+      points,
+      percent: ((points - BASIC_MILESTONE) / (PREMIUM_MILESTONE - BASIC_MILESTONE)) * 100,
+      label: `${pointsLabel(points)} / 3,000 pts`,
+      band: 'premium',
+      isComplete: false,
+      sheetCopy:
+        "You've reached 1,000 points! Basic in-home use test eligibility is being prepared — we'll let you know the moment it's ready.",
+    };
+  }
+
+  if (points >= FIRST_MILESTONE) {
+    return {
+      points,
+      percent: ((points - FIRST_MILESTONE) / (BASIC_MILESTONE - FIRST_MILESTONE)) * 100,
+      label: `${pointsLabel(points)} / 1,000 pts`,
+      band: 'basic',
+      isComplete: false,
+      badge: '250 Unlocked',
+      sheetCopy:
+        'Next up at 1,000 points: Basic in-home use test eligibility — coming soon.',
     };
   }
 
@@ -63,10 +92,7 @@ function getProgressState(points: number): ProgressState {
     label: `${pointsLabel(points)} / 250 pts`,
     band: 'first',
     isComplete: false,
-    sheetCopy:
-      points === 0
-        ? 'Welcome! Start earning points toward your first benefit at 250.'
-        : `You're at ${pointsLabel(points)} points — ${pointsLabel(FIRST_MILESTONE - points)} points away from unlocking additional Community Home modules.`,
+    sheetCopy: "At 250 points, you'll unlock additional Community Home modules.",
   };
 }
 
@@ -74,6 +100,8 @@ const scenarios = [
   { label: 'New member', href: '?arm=2&points=0' },
   { label: 'Near first milestone', href: '?arm=2&points=230' },
   { label: 'Just crossed 250', href: '?arm=2&points=260' },
+  { label: 'Near 1,000', href: '?arm=2&points=950' },
+  { label: 'Above 3,000', href: '?arm=2&points=3200' },
   { label: 'Control arm', href: '?arm=1&points=230' },
 ];
 

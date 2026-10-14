@@ -1,4 +1,4 @@
-import { Button, ChevronRightIcon, ProgressIndicator } from '@walmart/ld-kit';
+import { Button, ChevronRightIcon, ProgressIndicator, Tag } from '@walmart/ld-kit';
 import type { ProgressState } from '../pages/CommunityHomePage';
 
 type CommunityProgressProps = {
@@ -14,8 +14,9 @@ export function CommunityProgress({ progress, onOpen }: CommunityProgressProps) 
           <p className="eyebrow">Your Community progress</p>
           <h2 id="progress-heading">Keep shaping what comes next</h2>
         </div>
-        <span className="progress-points" aria-hidden="true">
-          {progress.label}
+        <span className="progress-points">
+          {progress.badge && <Tag color="positive" size="small">{progress.badge}</Tag>}
+          <span>{progress.label}</span>
         </span>
       </div>
 
