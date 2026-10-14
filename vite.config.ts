@@ -3,7 +3,12 @@ import react from "@vitejs/plugin-react";
 import path from "node:path";
 import fs from "node:fs";
 
+const base = process.env.GITHUB_ACTIONS
+  ? '/mmc-rewards-phase1b-v2/'
+  : '/';
+
 export default defineConfig({
+  base,
   server: {
     port: 3099,
   },
