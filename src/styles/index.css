@@ -322,6 +322,20 @@ a:focus-visible {
   background: var(--ld-semantic-color-surface-subtle);
 }
 
+.feed-card-locked-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 138px;
+  background: var(--ld-semantic-color-surface-subtle);
+  color: var(--ld-semantic-color-text-subtle);
+}
+
+.feed-card-locked-art svg {
+  width: 32px;
+  height: 32px;
+}
+
 .feed-card-sage .feed-card-art {
   background: var(--ld-semantic-color-surface-overlay-brand-subtle);
 }
@@ -380,6 +394,15 @@ a:focus-visible {
   color: var(--ld-semantic-color-text-subtle);
   font-size: 14px;
   line-height: 1.4;
+}
+
+.feed-card-copy-locked {
+  text-align: center;
+}
+
+.feed-card-copy-locked > p:not(.eyebrow) {
+  min-height: 0;
+  margin: 8px 0 0;
 }
 
 .community-note {
@@ -588,7 +611,8 @@ a:focus-visible {
     grid-template-columns: 1fr;
   }
 
-  .feed-card-art {
+  .feed-card-art,
+  .feed-card-locked-art {
     height: 112px;
   }
 

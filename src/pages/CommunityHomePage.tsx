@@ -97,12 +97,10 @@ function getProgressState(points: number): ProgressState {
 }
 
 const scenarios = [
-  { label: 'New member', href: '?arm=2&points=0' },
-  { label: 'Near first milestone', href: '?arm=2&points=230' },
-  { label: 'Just crossed 250', href: '?arm=2&points=260' },
-  { label: 'Near 1,000', href: '?arm=2&points=950' },
+  { label: 'Below 250', href: '?arm=2&points=230' },
+  { label: 'Above 250, below 1,000', href: '?arm=2&points=950' },
+  { label: 'Above 1,000, below 3,000', href: '?arm=2&points=2000' },
   { label: 'Above 3,000', href: '?arm=2&points=3200' },
-  { label: 'Control arm', href: '?arm=1&points=230' },
 ];
 
 function CommunityLogo() {
@@ -119,22 +117,46 @@ function CommunityLogo() {
   );
 }
 
-function FeedPlaceholder({ title, description, accent }: { title: string; description: string; accent: string }) {
+function FeedPlaceholder({
+  title,
+  description,
+  accent,
+  locked = false,
+}: {
+  title: string;
+  description: string;
+  accent: string;
+  locked?: boolean;
+}) {
   return (
-    <article className={`feed-card ${accent}`}>
-      <div className="feed-card-art" aria-hidden="true">
-        <span className="art-orbit art-orbit-one" />
-        <span className="art-orbit art-orbit-two" />
-        <span className="art-spark" />
-      </div>
-      <div className="feed-card-copy">
-        <p className="eyebrow">Member-powered</p>
-        <h3>{title}</h3>
-        <p>{description}</p>
-        <Button variant="tertiary" size="small" trailing={<ChevronRightIcon />}>
-          Learn more
-        </Button>
-      </div>
+    <article className={`feed-card ${accent} ${locked ? 'feed-card-is-locked' : ''}`}>
+      {locked ? (
+        <>
+          <div className="feed-card-locked-art">
+            <Icon name="Lock" a11yLabel="Locked" />
+          </div>
+          <div className="feed-card-copy feed-card-copy-locked">
+            <h3>{title}</h3>
+            <p>Unlock after 250 points to see what's new.</p>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="feed-card-art" aria-hidden="true">
+            <span className="art-orbit art-orbit-one" />
+            <span className="art-orbit art-orbit-two" />
+            <span className="art-spark" />
+          </div>
+          <div className="feed-card-copy">
+            <p className="eyebrow">Member-powered</p>
+            <h3>{title}</h3>
+            <p>{description}</p>
+            <Button variant="tertiary" size="small" trailing={<ChevronRightIcon />}>
+              Learn more
+            </Button>
+          </div>
+        </>
+      )}
     </article>
   );
 }
@@ -222,11 +244,13 @@ export default function CommunityHomePage() {
                 accent="feed-card-sage"
                 title="Members are shaping the future"
                 description="Your input helps guide what the Community explores next."
+                locked={progress.points < FIRST_MILESTONE}
               />
               <FeedPlaceholder
                 accent="feed-card-sand"
                 title="A closer look at member ideas"
                 description="See the latest stories inspired by feedback from the community."
+                locked={progress.points < FIRST_MILESTONE}
               />
             </div>
           </section>
