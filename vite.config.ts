@@ -3,12 +3,8 @@ import react from "@vitejs/plugin-react";
 import path from "node:path";
 import fs from "node:fs";
 
-const base = process.env.GITHUB_ACTIONS
-  ? '/mmc-rewards-phase1b-v2/'
-  : '/';
-
-export default defineConfig({
-  base,
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/mmc-rewards-phase1b-v2/' : '/',
   server: {
     port: 3099,
   },
@@ -19,7 +15,7 @@ export default defineConfig({
     }),
     a11yReportPlugin(),
   ],
-});
+}));
 
 /**
  * Living Design a11y dev-server plugin.
