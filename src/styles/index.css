@@ -46,8 +46,8 @@ a:focus-visible {
 }
 
 .prototype-shell {
-  min-height: 100vh;
-  max-width: 760px;
+  min-height: 100dvh;
+  max-width: 430px;
   margin: 0 auto;
   overflow: hidden;
   background: var(--ld-semantic-color-background);
@@ -482,7 +482,7 @@ a:focus-visible {
   z-index: 6;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  width: min(760px, 100%);
+  width: min(430px, 100%);
   min-height: 76px;
   transform: translateX(-50%);
   border-top: 1px solid var(--ld-semantic-color-border-subtlest);
@@ -589,6 +589,27 @@ a:focus-visible {
   color: var(--ld-semantic-color-text-subtle);
   font-size: 13px;
   line-height: 1.4;
+}
+
+@media (min-width: 600px) {
+  body {
+    padding: 24px 0;
+  }
+
+  .prototype-shell {
+    min-height: calc(100dvh - 48px);
+    border-radius: 28px;
+  }
+
+  .bottom-navigation {
+    bottom: 24px;
+    border: 1px solid var(--ld-semantic-color-border-subtlest);
+    border-radius: 0 0 28px 28px;
+  }
+
+  .toast {
+    bottom: 118px;
+  }
 }
 
 @media (max-width: 560px) {
